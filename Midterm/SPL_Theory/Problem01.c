@@ -1,10 +1,6 @@
 /******************************************* 
 Write a C program to print the following pattern. Take n as user input where n =
 (LAST_2_DIGITS_OF_YOUR_ ID % 5) + 5.
-_____               ______
-INPUT               OUTPUT
------               ------
-
 ********************************************/
 #include<stdio.h>
 int main(){
