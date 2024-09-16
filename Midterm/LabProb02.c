@@ -1,5 +1,9 @@
 /******************************************* 
-Write a program in C to reverse the words in a string.
+Intro
+_____               ______
+INPUT               OUTPUT
+-----               ------
+
 ********************************************/
 #include<stdio.h>
 int countStr(char a[]){
@@ -8,6 +12,10 @@ int countStr(char a[]){
         count++;
     }
     return count;
+}
+void revWord(char A[]){
+    for(int i=countStr(A)-1;i>=0;i--)
+    printf("%c",A[i]);
 }
 int main(){
     char str[100];
@@ -27,6 +35,7 @@ int main(){
             }
         }
     }
+
     for (int i=k-1; i>=0; i--) {
         printf("%s ", str2[i]);
     }
