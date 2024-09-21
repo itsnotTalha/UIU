@@ -16,24 +16,32 @@ struct Login {
     char Passuwu[50];
 };
 
+struct Trimester {
+    char name[50];          
+    const char *file;
+};
+
+
 void signup(void);
 void cleanConsole();
 void taking_User_Pass (int *Bhago);
 void list_of_features ();
 void aboutUIU ();
 void subjectLists();
+void trimesterWisedCourses(int opt);
 
 int signIn(struct Login login, char *name);
 
 const char *usersFile = "UserInfo.txt";
 const char *About = "AboutInfo.txt";
 const char *subjects = "SubjectList.txt";
+const char *ofrdCourse = "OfferedCourse.txt";
 
 int main() {
     int choice;
     int Bhaago = 1;
     int *BhaagoPtr=&Bhaago;
-
+    cleanConsole();
     puts("Hola Fella!");
     puts("Welcome to UIU Info Desk");
     
@@ -188,7 +196,61 @@ puts("");
 int option;
 printf("Enter index Number to learn more- ");
 scanf("%d", &option);
+trimesterWisedCourses(option);
 }
+
+void trimesterWisedCourses(int opt){
+FILE *file = fopen(subjects, "r");
+FILE *file2 = fopen(ofrdCourse, "r");
+if (file == NULL) {
+        printf("Error opening file: %s\n", subjects);
+        return;
+    }
+if (file2 == NULL) {
+        printf("Error opening file: %s\n", ofrdCourse);
+        return;
+    }
+    char line[256];
+    int count=1;
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if(count==opt)
+        printf("%s\n", line);
+        count++;
+        }
+    fclose(file);
+    cleanConsole();
+    puts("Select your Desired trimester to get offered course list-");
+    for(int i=1;i<=12;i++){
+        printf("[%d]\tTrimester %d",i,i);
+        puts("");
+    }
+    int option;
+    scanf("%d",&option);
+cleanConsole();
+    char line2[256];
+    int currentTrimester = 0; 
+    int inTrimester = 0; 
+
+    while (fgets(line2, sizeof(line2), file2) != NULL) {
+        if (strstr(line2, "Trimester") != NULL) {
+            currentTrimester++;
+            if (currentTrimester == option) {
+                inTrimester = 1; 
+                printf("%s", line2); 
+                continue; // Go to the next line
+            } else {
+                inTrimester = 0;
+            }
+        }
+
+        // Print lines only if we are in the requested trimester
+        if (inTrimester) {
+            printf("%s", line2); // Print the line
+        }
+    }
+    fclose(file2);
+}
+
 
 /******************************************* 
  * Author- Talha Jubayer
