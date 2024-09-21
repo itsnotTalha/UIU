@@ -24,8 +24,8 @@ int main(){
         for(i=n-4;i<=n;i++){
             value_final+=i*i;
             ++i;
-        printf("%d %d\n",i,value_final);
         }
+        printf("%d %d\n",i,value_final);
     }
 }
 /******************************************* 
