@@ -5,7 +5,7 @@ Intro
 #include <stdlib.h>
 #include <string.h>
 
-struct Home {
+struct SignUp {
     char name[50];
     char username[50];
     char password[50];
@@ -18,15 +18,21 @@ struct Login {
 
 void signup(void);
 void cleanConsole();
+void taking_User_Pass (int *Bhago);
+void list_of_features ();
+void aboutUIU ();
+void subjectLists();
+
 int signIn(struct Login login, char *name);
 
 const char *usersFile = "UserInfo.txt";
+const char *About = "AboutInfo.txt";
+const char *subjects = "SubjectList.txt";
 
 int main() {
     int choice;
     int Bhaago = 1;
-    struct Login login;
-    char userName[50];
+    int *BhaagoPtr=&Bhaago;
 
     puts("Hola Fella!");
     puts("Welcome to UIU Info Desk");
@@ -34,20 +40,11 @@ int main() {
     while (Bhaago==1) {
         puts("");
         puts("[1]\tLogin\n[2]\tSign Up\n[3]\tExit");
-        printf("Type option: ");
+        printf("\nType option: ");
         scanf("%d", &choice);
 
         if (choice == 1) {
-            printf("Enter your username: ");
-            scanf(" %[^\n]", login.Username);
-            printf("Enter your password: ");
-            scanf(" %[^\n]", login.Passuwu);
-            if (signIn(login, userName)) {
-                printf("Login successful! Welcome, %s!\n", userName);
-                Bhaago=0;
-            } else {
-                printf("Invalid username or password.\n");
-            }
+            taking_User_Pass(BhaagoPtr);
         } else if (choice == 2) {
             signup();
         } else if (choice == 3) {
@@ -63,12 +60,11 @@ int main() {
 }
 
 void signup(void) {
-    struct Home user;
+    struct SignUp user;
     FILE *file = fopen(usersFile, "a");
 
-    // Input user information
     printf("Enter your name: ");
-    scanf(" %[^\n]", user.name); // Read string with spaces
+    scanf(" %[^\n]", user.name);
     printf("Enter your username: ");
     scanf(" %[^\n]", user.username);
     printf("Enter your password: ");
@@ -79,7 +75,6 @@ void signup(void) {
         return;
     }
 
-    // Write user information to the file
     fprintf(file, "Name: %s\nUsername: %s\nPassword: %s\n", user.name, user.username, user.password);
 
     fclose(file);
@@ -92,6 +87,24 @@ void cleanConsole() {
     printf("\033[H\033[J");
 }
 
+void taking_User_Pass (int *Bhago){
+    struct Login login;
+    char userName[50];
+    printf("Enter your username: ");
+            scanf(" %[^\n]", login.Username);
+            printf("Enter your password: ");
+            scanf(" %[^\n]", login.Passuwu);
+            if (signIn(login, userName)) {
+                cleanConsole();
+                printf("Login successful!\nWelcome, %s!\nLet's Explore-\n", userName);
+                list_of_features ();
+                *Bhago=0;
+            } else {
+                printf("Invalid username or password.\n");
+            }
+}
+
+
 int signIn(struct Login login, char *name) {
     FILE *file = fopen(usersFile, "r");
     char fileName[50];
@@ -100,21 +113,81 @@ int signIn(struct Login login, char *name) {
 
     if (file == NULL) {
         printf("Error opening file!\n");
-        return 0; // Indicate error
+        return 0; 
     }
 
-    // Read and check each line in the file
     while (fscanf(file, "Name: %[^\n]\nUsername: %49s\nPassword: %49s\n", fileName, fileUsername, filePassword) != EOF) {
         if (strcmp(login.Username, fileUsername) == 0 && 
             strcmp(login.Passuwu, filePassword) == 0) {
-            strcpy(name, fileName); // Copy the name to the provided variable
+            strcpy(name, fileName);
             fclose(file);
-            return 1; // Credentials match
+            return 1;
         }
     }
 
     fclose(file);
     return 0; // Credentials do not match
+}
+
+void list_of_features (){
+    int wheel=1;
+    int feature1;
+    puts("[1]\tAbout UIU");
+    puts("[2]\tAvailable Subjects");
+    printf("Your option :");
+    scanf("%d",&feature1);
+    while(wheel)
+        {
+    switch (feature1){
+    case 1:
+    cleanConsole();
+        aboutUIU ();
+        wheel=0;
+        break;
+    case 2: 
+    cleanConsole();
+        subjectLists();
+        wheel=0;
+        break;
+    default:
+        puts("Invalid input");
+        break;
+    }
+        }
+}
+
+void aboutUIU (){
+    FILE *file = fopen(About, "r");
+ if (file == NULL) {
+        printf("Error opening file: %s\n", About);
+        return;
+    }
+    puts("");
+    char ch;
+    while ((ch = fgetc(file)) != EOF) {
+        putchar(ch);
+    }
+
+    fclose(file);
+}
+
+void subjectLists(){
+FILE *file = fopen(subjects, "r");
+ if (file == NULL) {
+        printf("Error opening file: %s\n", subjects);
+        return;
+    }
+    puts("----------[AVAILABLE SUBJECTS]----------");
+    char line[256];
+    int count=1;
+    while (fgets(line, sizeof(line), file) != NULL) {
+        printf("[%d] %s",count++, line);
+    }
+    fclose(file);
+puts("");
+int option;
+printf("Enter index Number to learn more- ");
+scanf("%d", &option);
 }
 
 /******************************************* 
