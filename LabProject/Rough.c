@@ -16,18 +16,20 @@ struct Login {
     char Passuwu[50];
 };
 
-struct Trimester {
+struct Option {
     char name[50];          
     const char *file;
 };
 
-
+void login();
 void signup(void);
 void cleanConsole();
 void taking_User_Pass (int *Bhago);
 void list_of_features ();
 void aboutUIU ();
 void subjectLists();
+void displaySubMenu();
+void trimesterList ();
 void trimesterWisedCourses(int opt);
 
 int signIn(struct Login login, char *name);
@@ -38,14 +40,20 @@ const char *subjects = "SubjectList.txt";
 const char *ofrdCourse = "OfferedCourse.txt";
 
 int main() {
-    int choice;
-    int Bhaago = 1;
-    int *BhaagoPtr=&Bhaago;
+    
     cleanConsole();
     puts("Hola Fella!");
     puts("Welcome to UIU Info Desk");
+    login();
     
-    while (Bhaago==1) {
+    
+    return 0;
+}
+void login(){
+    int choice;
+    int Bhaago = 1;
+    int *BhaagoPtr=&Bhaago;
+while (Bhaago==1) {
         puts("");
         puts("[1]\tLogin\n[2]\tSign Up\n[3]\tExit");
         printf("\nType option: ");
@@ -64,7 +72,6 @@ int main() {
         }
     }
 
-    return 0;
 }
 
 void signup(void) {
@@ -199,6 +206,30 @@ scanf("%d", &option);
 trimesterWisedCourses(option);
 }
 
+void displaySubMenu(){
+    int maxOption=5;
+    struct Option options[]={
+        {"Course List", "courses.txt"},
+        {"Trimester Info", "trimester.txt"},
+        {"Grades", "grades.txt"},
+        {"BBA","BBA.txt"},
+        {"CSE", "cse.txt"}
+    };
+    
+        printf("\nSelect an option:\n");
+        for (int i = 0; i < maxOption; i++) {
+            printf("[%d] %s\n", i + 1, options[i].name);
+        }
+
+}
+
+void trimesterList () {
+    puts("Select your Desired trimester to get offered course list:");
+    for(int i = 1; i <= 12; i++) {
+        printf("[%d]\tTrimester %d\n", i, i);
+    }
+}
+
 void trimesterWisedCourses(int opt){
 FILE *file = fopen(subjects, "r");
 FILE *file2 = fopen(ofrdCourse, "r");
@@ -219,11 +250,7 @@ if (file2 == NULL) {
         }
     fclose(file);
     cleanConsole();
-    puts("Select your Desired trimester to get offered course list-");
-    for(int i=1;i<=12;i++){
-        printf("[%d]\tTrimester %d",i,i);
-        puts("");
-    }
+    trimesterList();
     int option;
     scanf("%d",&option);
 cleanConsole();
