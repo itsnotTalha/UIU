@@ -14,6 +14,7 @@ SL	Course Code	Prerequisite
 3	CSE 1112	CSE 1110
 4	MATH 1151	
 Total	Credit:9.0
+Trimester 3:
 SL	Course Code	Prerequisite
 
 1	ENG 1013	ENG 1011

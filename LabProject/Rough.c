@@ -187,6 +187,7 @@ void aboutUIU (){
     }
 
     fclose(file);
+    getchar();
 }
 
 void subjectLists(){
