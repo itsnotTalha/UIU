@@ -32,7 +32,8 @@ void aboutUIU ();
 void subjectLists();
 void displaySubMenu();
 void trimesterList ();
-void trimesterWisedCourses(int opt);
+void trimesterWisedCourses(int option, const char *filename);
+
 
 int signIn(struct Login login, char *name);
 
@@ -226,7 +227,11 @@ void displaySubMenu(){
         printf("Invalid choice. Please try again.\n");
         return;
     }
-trimesterWisedCourses(choice);
+   trimesterList();
+   int trimChoice;
+   scanf("%d",&trimChoice); 
+   cleanConsole();
+trimesterWisedCourses(trimChoice,options[choice-1].file);
 
 }
 
@@ -237,52 +242,44 @@ void trimesterList () {
     }
 }
 
-void trimesterWisedCourses(int opt){
-FILE *file = fopen(subjects, "r");
-FILE *file2 = fopen(ofrdCourse, "r");
-if (file == NULL) {
-        printf("Error opening file: %s\n", subjects);
+void trimesterWisedCourses(int option, const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file: %s\n", filename);
         return;
     }
-if (file2 == NULL) {
-        printf("Error opening file: %s\n", ofrdCourse);
-        return;
-    }
-    char line[256];
-    int count=1;
-    while (fgets(line, sizeof(line), file) != NULL) {
-        if(count==opt)
-        printf("%s\n", line);
-        count++;
-        }
-    fclose(file);
-    cleanConsole();
-    trimesterList();
-    int option;
-    scanf("%d",&option);
-cleanConsole();
-    char line2[256];
-    int currentTrimester = 0; 
-    int inTrimester = 0; 
 
-    while (fgets(line2, sizeof(line2), file2) != NULL) {
-        if (strstr(line2, "Trimester") != NULL) {
+    char line[256];
+    int currentTrimester = 0; 
+    int isInTrimester = 0; 
+    int trimesterFound = 0;
+
+    while (fgets(line, sizeof(line), file) != NULL) {
+        
+         // Check for "Trimester" header
+        if (strstr(line, "Trimester") != NULL) {
             currentTrimester++;
+
+            // If we've reached the desired trimester, print the header
             if (currentTrimester == option) {
-                inTrimester = 1; 
-                printf("%s", line2); 
-                continue; // Go to the next line
+                isInTrimester = 1;
+                trimesterFound = 1;
+                printf("%s", line);
+                continue; // Continue to print the following lines
             } else {
-                inTrimester = 0;
+                if (isInTrimester) {
+                    // If we are in a previously found trimester, we stop printing
+                    break; 
+                }
             }
         }
 
         // Print lines only if we are in the requested trimester
-        if (inTrimester) {
-            printf("%s", line2); // Print the line
+        if (isInTrimester) {
+            printf("%s", line);
         }
     }
-    fclose(file2);
+    fclose(file);
 }
 
 
