@@ -4,6 +4,8 @@ Intro
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAX_OPTIONS 6
+#define MAX_TRIMESTER 12
 
 struct SignUp {
     char name[50];
@@ -161,7 +163,7 @@ void list_of_features (){
         break;
     case 2: 
     cleanConsole();
-        subjectLists();
+        displaySubMenu();
         wheel=0;
         break;
     default:
@@ -192,7 +194,6 @@ FILE *file = fopen(subjects, "r");
         printf("Error opening file: %s\n", subjects);
         return;
     }
-    puts("----------[AVAILABLE SUBJECTS]----------");
     char line[256];
     int count=1;
     while (fgets(line, sizeof(line), file) != NULL) {
@@ -203,23 +204,29 @@ puts("");
 int option;
 printf("Enter index Number to learn more- ");
 scanf("%d", &option);
-trimesterWisedCourses(option);
 }
 
 void displaySubMenu(){
-    int maxOption=5;
-    struct Option options[]={
-        {"Course List", "courses.txt"},
-        {"Trimester Info", "trimester.txt"},
-        {"Grades", "grades.txt"},
-        {"BBA","BBA.txt"},
-        {"CSE", "cse.txt"}
+    int choice;
+    struct Option options[] = {
+        {"CSE", "cse.txt"},
+        {"EEE", "eee.txt"},
+        {"DS", "ds.txt"},
+        {"BBA", "bba.txt"},
+        {"EDS", "eds.txt"},
+        {"MSJ", "msj.txt"}
     };
-    
-        printf("\nSelect an option:\n");
-        for (int i = 0; i < maxOption; i++) {
-            printf("[%d] %s\n", i + 1, options[i].name);
-        }
+    puts("----------[AVAILABLE SUBJECTS]----------");
+    for (int i = 0; i < MAX_OPTIONS; i++) {
+        printf("[%d] %s\n", i + 1, options[i].name);
+    }
+    printf("Select to learn more :");
+    scanf("%d", &choice);
+    if (choice < 1 || choice > MAX_OPTIONS) {
+        printf("Invalid choice. Please try again.\n");
+        return;
+    }
+trimesterWisedCourses(choice);
 
 }
 
