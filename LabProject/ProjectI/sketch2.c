@@ -39,6 +39,7 @@ void about_uiu ();
 int subMenu();
 void trimesterList();
 int backto ();
+void trimesterWisedCourses(int option, const char *filename);
 
 int main(void){
     struct SignIn signin;
@@ -47,10 +48,8 @@ int main(void){
         int wheel=1;
         while(wheel){
         Homepage();
-            }
         }
-    //else if(loginpage()){}    
-    //cleanConsole();
+    }
 }
 int Homepage (){
     int wheel=1;
@@ -107,12 +106,12 @@ int subMenu (){
     int choice;
     int trimChoice;
     struct Option options[] = {
-        {"CSE", "cse.txt"},
-        {"EEE", "eee.txt"},
-        {"DS", "ds.txt"},
-        {"BBA", "bba.txt"},
-        {"EDS", "eds.txt"},
-        {"MSJ", "msj.txt"}
+        {"CSE", "CourseList\\cse.txt"},
+        {"EEE", "CourseList\\eee.txt"},
+        {"DS", "CourseList\\ds.txt"},
+        {"BBA", "CourseList\\bba.txt"},
+        {"EDS", "CourseList\\eds.txt"},
+        {"MSJ", "CourseList\\msj.txt"}
     };
     puts("----------[AVAILABLE SUBJECTS]----------");
     for (int i = 0; i < MAX_OPTIONS; i++) {
@@ -130,14 +129,55 @@ int subMenu (){
     }
      trimesterList();
      scanf("%d",&trimChoice); 
-   cleanConsole();
-  // trimesterWisedCourses(trimChoice,options[choice-1].file);
+     cleanConsole();
+    trimesterWisedCourses(trimChoice,options[choice-1].file);
 }
+void trimesterWisedCourses(int option, const char *filename){
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file: %s\n", filename);
+        return;
+    }
+
+    char line[256];
+    int currentTrimester = 0; 
+    int isInTrimester = 0; 
+    int trimesterFound = 0;
+
+    while (fgets(line, sizeof(line), file) != NULL) {
+        
+         // Check for "Trimester" header
+        if (strstr(line, "Trimester") != NULL) {
+            currentTrimester++;
+
+            // If we've reached the desired trimester, print the header
+            if (currentTrimester == option) {
+                isInTrimester = 1;
+                trimesterFound = 1;
+                printf("%s", line);
+                continue; // Continue to print the following lines
+            } else {
+                if (isInTrimester) {
+                    // If we are in a previously found trimester, we stop printing
+                    break; 
+                }
+            }
+        }
+
+        // Print lines only if we are in the requested trimester
+        if (isInTrimester) {
+            printf("%s", line);
+        }
+    }
+    fclose(file);
+}
+
 void trimesterList () {
     puts("Select your Desired trimester to get offered course list:");
     for(int i = 1; i <= 12; i++) {
         printf("[%d]\tTrimester %d\n", i, i);
     }
+    printf("\nSELECT_:");
 }
 void about_uiu (){
     FILE *file = fopen(About, "r");
@@ -178,60 +218,95 @@ int logout (){
     }
 }
 
-int loginpage(){
+int loginpage() {
     int input;
-    int wheel=1;
-    while(wheel){
-    puts("[1] LOGIN");
-    puts("[2] SIGN UP");
-    puts("[0] EXIT");
-    printf("\nSELECT :");
-    scanf("%d",&input);
-    if(input==1){
-        if(sign_in()==0){
-            wheel=0;
-            return 0;
-        }
-        
-    }
-    else if(input==2){
-        if(!sign_up()){
+    int wheel = 1;
+
+    while (wheel) {
+        puts("[1] LOGIN");
+        puts("[2] SIGN UP");
+        puts("[0] EXIT");
+        printf("\nSELECT: ");
+         
+        if (scanf("%d", &input) != 1) {
             cleanConsole();
-            puts("Registration Completed Successfully!");
-            puts("Login to continue...");
+            printf("Invalid input. Please enter an integer.\n");
+            // Clear the input buffer
+            while (getchar() != '\n'); // discard invalid input
+            continue; // Prompt the user again
+        }
+
+        switch (input) {
+            case 1:
+                if (sign_in() == 0) {
+                    wheel = 0;  // Exit loop on successful login
+                    return 0;   // Return to caller
+                } else {
+                    printf("Login failed. Please try again.\n");
+                }
+                break;
+
+            case 2:
+                if (sign_up()) {
+                    cleanConsole();
+                    puts("Registration Completed Successfully!");
+                    puts("Login to continue...");
+                } else {
+                    printf("Registration failed. Please try again.\n");
+                }
+                break;
+
+            case 0:
+                logout();
+                wheel = 0;  // Exit loop after logout
+                break;
+
+            default:
+                printf("Invalid selection. Please try again.\n");
+                break;
+        }
+    }
+
+    return 1;  // Optionally return a status if needed
+}
+
+int sign_in (){
+     struct SignIn signin;
+    FILE *loginFile = fopen(LoginInfo, "r");
+    char Username[50];
+    
+    if (loginFile == NULL) {
+        printf("Error opening file!\n");
+        return -1;
+    }
+
+    cleanConsole();
+    printf("USERNAME : ");
+    scanf("%s", signin.login.username);
+    printf("PASSWORD : ");
+    scanf("%s", signin.login.password);
+
+    char line[256];
+    while (fgets(line, sizeof(line), loginFile)) {
+        // Adjust the format for your specific case
+        if (sscanf(line, "%49s %49s %49s",
+                   signin.signup.Name, signin.signup.username, signin.signup.password) == 3) {
+            if (strcmp(signin.login.username, signin.signup.username) == 0 &&
+                strcmp(signin.login.password, signin.signup.password) == 0) {
+                strcpy(Username, signin.signup.Name); // Copy the user's name
+                fclose(loginFile);
+                cleanConsole();
+                printf("\tWelcome Back, ");
+                puts(Username);
+                return 0; // Successful login
             }
         }
-    else if(input==0){
-            logout();
-        }
     }
-}
-int sign_in (){
-    struct SignIn signin;
-    FILE *loginFile= fopen(LoginInfo,"r");
-    char Username[50];
-      if (loginFile == NULL) {
-    printf("Error opening file!\n");
+
+    fclose(loginFile);
+    cleanConsole();
+    puts("Wrong Credential, please try again.");
     return -1;
-  }
-    printf("Username :");
-    scanf("%s", signin.login.username);
-    printf("Password :");
-    scanf("%s", signin.login.password);
-     while (fscanf(loginFile, "%s %s %s", signin.signup.Name, signin.signup.username, signin.signup.password) != EOF) {
-     if (strcmp(signin.login.username, signin.signup.username) == 0 &&
-            strcmp(signin.login.password, signin.signup.password) == 0) {
-            strcpy(Username, signin.signup.Name); // Copy the user's name
-            fclose(loginFile);
-            cleanConsole();
-            printf("Welcome Back, ");
-            puts(Username);
-      return 0;
-    }
-  }
-  fclose(loginFile);
-  puts("Wrong Credential, please try again.");
-  return -1;
 }
 int sign_up(){
   FILE *file = fopen(LoginInfo, "a");
