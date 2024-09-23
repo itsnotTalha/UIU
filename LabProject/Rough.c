@@ -224,9 +224,15 @@ void displaySubMenu(){
     }
     printf("Select to learn more :");
     scanf("%d", &choice);
-    if (choice < 1 || choice > MAX_OPTIONS) {
-        printf("Invalid choice. Please try again.\n");
-        return;
+     while (1) {
+        printf("Select to learn more: ");
+        scanf("%d", &choice);
+
+        if (choice < 1 || choice > MAX_OPTIONS) {
+            printf("Invalid choice. Please try again.\n");
+        } else {
+            break;  // Exit the loop if input is valid
+        }
     }
    trimesterList();
    int trimChoice;
