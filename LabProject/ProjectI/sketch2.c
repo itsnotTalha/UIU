@@ -323,7 +323,7 @@ int sign_up(){
     scanf(" %[^\n]", signin.signup.username);
     printf("Enter your password: ");
     scanf(" %[^\n]", signin.signup.password);
-    
+
     removeSpaces(signin.signup.Name);
 
     fprintf(file,"%s %s %s\n",signin.signup.Name,signin.signup.username,signin.signup.password);
@@ -344,3 +344,9 @@ void removeSpaces(char *str) {
     temp[j] = '\0';
     strcpy(str, temp); // Copy the modified string back to the original
 }
+
+/******************************************* 
+ * Author- Talha Jubayer
+ * talhajubayer737@gmail.com
+ * BSCSE@United International University
+********************************************/
