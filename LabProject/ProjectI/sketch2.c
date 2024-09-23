@@ -39,6 +39,7 @@ void about_uiu ();
 int subMenu();
 void trimesterList();
 int backto ();
+void removeSpaces(char *str);
 void trimesterWisedCourses(int option, const char *filename);
 
 int main(void){
@@ -247,7 +248,7 @@ int loginpage() {
                 break;
 
             case 2:
-                if (sign_up()) {
+                if (!sign_up()) {
                     cleanConsole();
                     puts("Registration Completed Successfully!");
                     puts("Login to continue...");
@@ -285,7 +286,7 @@ int sign_in (){
     scanf("%s", signin.login.username);
     printf("PASSWORD : ");
     scanf("%s", signin.login.password);
-
+    
     char line[256];
     while (fgets(line, sizeof(line), loginFile)) {
         // Adjust the format for your specific case
@@ -322,10 +323,24 @@ int sign_up(){
     scanf(" %[^\n]", signin.signup.username);
     printf("Enter your password: ");
     scanf(" %[^\n]", signin.signup.password);
+    
+    removeSpaces(signin.signup.Name);
+
     fprintf(file,"%s %s %s\n",signin.signup.Name,signin.signup.username,signin.signup.password);
     fclose(file);
     return 0;
 }
 void cleanConsole(){
     printf("\033[H\033[J");
+}
+void removeSpaces(char *str) {
+    char temp[50];
+    int j = 0; 
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] != ' ') { // If the character is not a space
+            temp[j++] = str[i]; // Add it to the temp array
+        }
+    }
+    temp[j] = '\0';
+    strcpy(str, temp); // Copy the modified string back to the original
 }
