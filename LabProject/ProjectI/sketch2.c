@@ -206,10 +206,10 @@ int feature_list (){
 int logout (){
      int cmd;
     puts("You wanna leave me?");
-    puts("[0] YES\n[1] NO");
+    puts("[1] YES\n[0] NO");
     printf("SELECT :");
     scanf("%d", &cmd);
-    if (cmd == 0) {
+    if (cmd == 1) {
         cleanConsole();
         puts("I will miss you.");
         exit(0); // End the program
@@ -337,9 +337,11 @@ void removeSpaces(char *str) {
     char temp[50];
     int j = 0; 
     for (int i = 0; str[i] != '\0'; i++) {
-        if (str[i] != ' ') { // If the character is not a space
-            temp[j++] = str[i]; // Add it to the temp array
+         temp[j] = str[i]; // Add it to the temp array
+        if (str[i] == ' ') { 
+            temp[j]='_';
         }
+        j++;
     }
     temp[j] = '\0';
     strcpy(str, temp); // Copy the modified string back to the original
