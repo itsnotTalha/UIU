@@ -37,9 +37,11 @@ int logout();
 int feature_list ();
 void about_uiu ();
 int subMenu();
+int subFacultySubmenu();
 void trimesterList();
 int backto ();
 void removeSpaces(char *str);
+void selectTrimesterAndCourses(int choice, struct Option options[]);
 void trimesterWisedCourses(int option, const char *filename);
 
 int main(void){
@@ -68,8 +70,19 @@ int Homepage (){
         break;
     case 2:
         cleanConsole();
-        subMenu();
-        if(backto())
+        struct Option options[] = {
+        {"CSE", "CourseList\\cse.txt"},
+        {"EEE", "CourseList\\eee.txt"},
+        {"DS", "CourseList\\ds.txt"},
+        {"BBA", "CourseList\\bba.txt"},
+        {"EDS", "CourseList\\eds.txt"},
+        {"MSJ", "CourseList\\msj.txt"}
+        };
+
+    int numOptions = sizeof(options) / sizeof(options[0]);
+    selectTrimesterAndCourses(subMenu(options, numOptions),options);
+
+       if(backto())
         wheel=1;
         break;
     case 0:
@@ -103,36 +116,36 @@ int backto(){
         break;
     }
 }
-int subMenu (){
-    int choice;
-    int trimChoice;
-    struct Option options[] = {
-        {"CSE", "CourseList\\cse.txt"},
-        {"EEE", "CourseList\\eee.txt"},
-        {"DS", "CourseList\\ds.txt"},
-        {"BBA", "CourseList\\bba.txt"},
-        {"EDS", "CourseList\\eds.txt"},
-        {"MSJ", "CourseList\\msj.txt"}
-    };
+//int subFacultySubmenu(){}
+
+int subMenu(struct Option options[], int numOptions) {
+    int choice, trimChoice;
     puts("----------[AVAILABLE SUBJECTS]----------");
-    for (int i = 0; i < MAX_OPTIONS; i++) {
+    for (int i = 0; i < numOptions; i++) {
         printf("[%d] %s\n", i + 1, options[i].name);
     }
-     while (1) {  // Loop until a valid choice is made
+    while (1) {
         printf("Select to learn more: ");
         scanf("%d", &choice);
-
-        if (choice < 1 || choice > MAX_OPTIONS) {
+        if (choice < 1 || choice > numOptions) {
             printf("Invalid choice. Please try again.\n");
         } else {
             cleanConsole();
-            break;}
+            return choice;
+            break;
+        }
     }
-     trimesterList();
-     scanf("%d",&trimChoice); 
-     cleanConsole();
-    trimesterWisedCourses(trimChoice,options[choice-1].file);
+    
 }
+void selectTrimesterAndCourses(int choice, struct Option options[]) {
+    int trimChoice;
+    trimesterList();
+    scanf("%d", &trimChoice);
+    cleanConsole();
+    trimesterWisedCourses(trimChoice, options[choice - 1].file);
+}
+
+
 void trimesterWisedCourses(int option, const char *filename){
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -198,6 +211,7 @@ int feature_list (){
     int option;
     puts("[1] About UIU");
     puts("[2] Available Subjects");
+    puts("[3] Faculty Details");
     puts("[0] EXIT");
     printf("SELECT_:");
     scanf("%d",&option);
