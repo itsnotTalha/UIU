@@ -42,7 +42,7 @@ void trimesterList();
 int backto ();
 void removeSpaces(char *str);
 void selectTrimesterAndCourses(int choice, struct Option options[]);
-void trimesterWisedCourses(int option, const char *filename);
+void printFiles(int option, char string[], const char *filename);
 
 int main(void){
     struct SignIn signin;
@@ -83,6 +83,23 @@ int Homepage (){
     selectTrimesterAndCourses(subMenu(options, numOptions),options);
 
        if(backto())
+        wheel=1;
+        break;
+    case 3:
+        cleanConsole();
+        struct Option facOption[] = {
+        {"CSE", "FacultyList\\CSE.txt"},
+        {"EEE", "FacultyList\\EEE.txt"},
+        {"DS", "FacultyList\\ds.txt"},
+        {"BBA", "FacultyList\\BBA.txt"},
+        {"EDS", "FacultyList\\eds.txt"},
+        {"MSJ", "FacultyList\\msj.txt"}
+        };  
+
+        int numOptions2 = sizeof(facOption) / sizeof(facOption[0]);
+      subMenu(facOption, numOptions2);
+    printFiles(1, "Faculty", facOption->file);
+    if(backto())
         wheel=1;
         break;
     case 0:
@@ -142,11 +159,11 @@ void selectTrimesterAndCourses(int choice, struct Option options[]) {
     trimesterList();
     scanf("%d", &trimChoice);
     cleanConsole();
-    trimesterWisedCourses(trimChoice, options[choice - 1].file);
+    printFiles(trimChoice, "Trimester", options[choice - 1].file);
 }
 
 
-void trimesterWisedCourses(int option, const char *filename){
+void printFiles(int option, char string[], const char *filename){
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error opening file: %s\n", filename);
@@ -161,7 +178,7 @@ void trimesterWisedCourses(int option, const char *filename){
     while (fgets(line, sizeof(line), file) != NULL) {
         
          // Check for "Trimester" header
-        if (strstr(line, "Trimester") != NULL) {
+        if (strstr(line, string) != NULL) {
             currentTrimester++;
 
             // If we've reached the desired trimester, print the header
