@@ -2,7 +2,7 @@
 #include <string.h>
 
 const char *About = "Courses.txt";
-const char *Faculty = "FacultyList.txt";
+const char *Faculty = "FacultyList\\FacultyList.txt";
 const char *FacMore= "FacultyList\\FacultyDetails.txt";
 struct readFile
 {
@@ -83,18 +83,23 @@ int main()
     int Occurs = 1;
     switch(linePrinter(About)){
         case 1: fileReader(Faculty,"CSE", Occurs);
+            fileReader("FacultyList\\DetCSE.txt", "FAC", takeInput());
         break;
         case 2: fileReader(Faculty,"EEE",Occurs);
+            fileReader("FacultyList\\DetEEE.txt", "FAC", takeInput());
         break;
         case 3: fileReader(Faculty,"DS",Occurs);
+            fileReader("FacultyList\\DetCSE.txt", "FAC", takeInput());
         break;
         case 4: fileReader(Faculty,"BBA",Occurs);
+            fileReader("FacultyList\\DetBBA.txt", "FAC", takeInput());
         break;
         case 5: fileReader(Faculty,"AIS",Occurs);
+            fileReader("FacultyList\\DetBBA.txt", "FAC", takeInput());
         break;
         case 6: fileReader(Faculty,"BSE",Occurs);
+            fileReader("FacultyList\\DetBSE.txt", "FAC", takeInput());
         break;
     }
-   fileReader(FacMore, "FAC", takeInput());
     return 0;
 }

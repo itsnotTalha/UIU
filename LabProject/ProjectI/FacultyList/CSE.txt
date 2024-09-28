@@ -1,12 +1,21 @@
-Faculty
--------------------------------
-1	Md. Abul Kashem Mia		Vice Chancellor	
-2	Hasan Sarwar			Professor	
-3	Mohammad Nurul Huda		Professor	
-4	Khondaker Abdullah -Al-Mamun	Professor	
-5	A.K.M. Muzahidul Islam		Professor		
-6	Md. Motaharul Islam		Professor	
-7	Dewan Md. Farid			Professor		
-8	Al-Sakib Khan Pathan		Professor		
-9	Mohammad Shahriar Rahman	Professor
-10	Muhammad Nomani Kabir		Associate Professor
+SL	Name				Designation		Email
+1	Md. Abul Kashem Mia		Vice Chancellor		kashem@uiu.ac.bd
+2	Hasan Sarwar			Professor		hsarwar@cse.uiu.ac.bd
+3	Mohammad Nurul Huda		Professor		mnh@cse.uiu.ac.bd
+4	Khondaker Abdullah -Al-Mamun	Professor		mamun@cse.uiu.ac.bd
+5	A.K.M. Muzahidul Islam		Professor		muzahid@cse.uiu.ac.bd
+6	Md. Motaharul Islam		Professor		motaharul@cse.uiu.ac.bd
+7	Dewan Md. Farid			Professor		dewanfarid@cse.uiu.ac.bd
+8	Al-Sakib Khan Pathan		Professor		sakib@cse.uiu.ac.bd
+9	Mohammad Shahriar Rahman	Professor		mshahriar@cse.uiu.ac.bd
+10	Muhammad Nomani Kabir		Associate Professor	kabir@cse.uiu.ac.bd
+11	Suman Ahmmed			Associate Professor	suman@cse.uiu.ac.bd
+12	Riasat Azim			Assistant Professor	riasat@cse.uiu.ac.bd
+13	Mohammad Mamun Elahi		Assistant Professor	mmelahi@cse.uiu.ac.bd
+14	Rubaiya Rahtin Khan		Assistant Professor	rubaiya@cse.uiu.ac.bd
+15	Md. Benzir Ahmed		Assistant Professor	benzir@cse.uiu.ac.bd
+16	Nahid Hossain			Assistant Professor	nahid@cse.uiu.ac.bd
+17	Khushnur Binte Jahangir		Lecturer		khushnur@cse.uiu.ac.bd
+18	Minhajul Bashir			Lecturer		minhajul@cse.uiu.ac.bd
+19	Shoib Ahmed Shourav		Lecturer		shoib@cse.uiu.ac.bd
+20	Nabila Sabrin Sworna		Lecturer		nabila@cse.uiu.ac.bd

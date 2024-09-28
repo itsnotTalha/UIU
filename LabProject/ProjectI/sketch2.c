@@ -188,8 +188,8 @@ int linePrinter(const char *getfile)
 int backto()
 {
     int option;
-    puts("");
-    puts("");
+    puts("---------------------------");
+    puts("---------------------------");
     puts("[1] Back to Home");
     puts("[0] EXIT");
     printf("SELECT_:");
