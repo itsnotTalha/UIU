@@ -82,7 +82,7 @@ int main()
     char keyword[] = "EEE";
     int Occurs = 1;
     switch(linePrinter(About)){
-        case 1: fileReader(Faculty,"CSE", Occurs);
+        case 1: fileReader("Tuitionfee.txt","CSE", Occurs);
             fileReader("FacultyList\\DetCSE.txt", "FAC", takeInput());
         break;
         case 2: fileReader(Faculty,"EEE",Occurs);

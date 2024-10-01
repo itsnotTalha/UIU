@@ -1,7 +1,12 @@
-<<<<<<<<<< [COURSES] >>>>>>>>>>
-Computer Science and Engineering (CSE)
-Civil Engineering (CE)
-Data Science (DS)
-Bachelor of Business Administration (BBA)
-Accounting and Information Systems (AIS)
-Bachelor of Science in Economics
+<<<<<<<<<<<<<<< [COURSES] >>>>>>>>>>>>>>>
+[1] Computer Science and Engineering (CSE)
+
+[2] Electrical & Electronic Engineering (EEE)
+
+[3] Data Science (DS)
+
+[4] Bachelor of Business Administration (BBA)
+
+[5] Accounting and Information Systems (AIS)
+
+[6] Bachelor of Science in Economics (BSE)

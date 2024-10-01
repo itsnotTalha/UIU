@@ -7,7 +7,8 @@
 const char *LoginInfo = "loginInfo.txt";
 const char *About = "AboutUIU.txt";
 const char *Courselist = "Courses.txt";
-const char *Faclist = "FacultyList.txt";
+const char *Faclist = "FacultyList\\FacultyList.txt";
+const char *tuiFee = "Tuitionfee.txt";
 
 struct Signup
 {
@@ -80,12 +81,12 @@ int Homepage()
         case 2:
             cleanConsole();
             struct Option options[] = {
-                {"CSE", "CourseList\\cse.txt"},
-                {"EEE", "CourseList\\eee.txt"},
-                {"DS", "CourseList\\ds.txt"},
-                {"BBA", "CourseList\\bba.txt"},
-                {"AIS", "CourseList\\ais.txt"},
-                {"BSE", "CourseList\\bse.txt"}};
+                {"CSE", "cse.txt"},
+                {"EEE", "eee.txt"},
+                {"DS", "ds.txt"},
+                {"BBA", "bba.txt"},
+                {"AIS", "ais.txt"},
+                {"BSE", "bse.txt"}};
 
             int numOptions = sizeof(options) / sizeof(options[0]);
             selectTrimesterAndCourses(subMenu(options, numOptions), options);
@@ -100,23 +101,50 @@ int Homepage()
             {
             case 1:
                 fileReader(Faclist, "CSE", Occurs);
+            fileReader("FacultyList\\DetCSE.txt", "FAC", takeInput());
                 break;
             case 2:
                 fileReader(Faclist, "EEE", Occurs);
+            fileReader("FacultyList\\DetEEE.txt", "FAC", takeInput());
                 break;
             case 3:
                 fileReader(Faclist, "DS", Occurs);
+            fileReader("FacultyList\\DetCSE.txt", "FAC", takeInput());
                 break;
             case 4:
                 fileReader(Faclist, "BBA", Occurs);
+            fileReader("FacultyList\\DetBBA.txt", "FAC", takeInput());
                 break;
             case 5:
                 fileReader(Faclist, "AIS", Occurs);
+            fileReader("FacultyList\\DetBBA.txt", "FAC", takeInput());
                 break;
             case 6:
                 fileReader(Faclist, "BSE", Occurs);
+            fileReader("FacultyList\\DetBSE.txt", "FAC", takeInput());
                 break;
+             default:
+            puts("Not a 'VALID' input.");   
             }
+            if (backto())
+                wheel = 1;
+            break;
+        case 4:
+        Occurs=1;
+        cleanConsole(); 
+        switch (linePrinter(Courselist))
+        {
+        case 1: fileReader("Tuitionfee.txt","CSE", Occurs);
+
+            break;
+        case 2:
+                fileReader(tuiFee, "EEE", Occurs);
+            break;
+        
+        default:
+            puts("Not a 'VALID' input.");   
+            break;
+        }
             if (backto())
                 wheel = 1;
             break;
@@ -129,7 +157,6 @@ int Homepage()
 }
 void fileReader(const char *filename, const char keyword[], int Occurs)
 {
-    cleanConsole();
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
@@ -143,7 +170,7 @@ void fileReader(const char *filename, const char keyword[], int Occurs)
         {
             occurrences++;
             // Stop if we reached the max occurrences
-            if (occurrences == Occurs + 1)
+            if (occurrences == Occurs+1)
             {
                 break;
             }
@@ -188,7 +215,7 @@ int linePrinter(const char *getfile)
 int backto()
 {
     int option;
-    puts("---------------------------");
+    puts("\n---------------------------");
     puts("---------------------------");
     puts("[1] Back to Home");
     puts("[0] EXIT");
@@ -326,6 +353,7 @@ int feature_list()
     puts("[1] About UIU");
     puts("[2] Available Subjects");
     puts("[3] Faculty Details");
+    puts("[3] Tuition Fee");
     puts("[0] EXIT");
     printf("SELECT_:");
     scanf("%d", &option);
@@ -489,6 +517,7 @@ int takeInput()
     int input;
     printf("\nSelect to learn more :");
     scanf("%d",&input);
+    cleanConsole();
     return input;
 }
 void removeSpaces(char *str)
