@@ -9,6 +9,8 @@ const char *About = "AboutUIU.txt";
 const char *Courselist = "Courses.txt";
 const char *Faclist = "FacultyList\\FacultyList.txt";
 const char *tuiFee = "Tuitionfee.txt";
+const char *circular = "Circular.txt";
+const char *uiuWeb = "https://www.facebok.com";
 
 struct Signup
 {
@@ -31,6 +33,18 @@ struct Option
     char name[50];
     const char *file;
 };
+struct Apply
+{
+    char name[50];
+    char fathername[50];
+    char mothername[50];
+    float hscResult;
+    int passingYear;
+    char regID[20];
+    char rollNum[20];
+    float sscResult;
+};
+
 
 int loginpage();
 int sign_in();
@@ -49,6 +63,9 @@ void selectTrimesterAndCourses(int choice, struct Option options[]);
 void printFiles(int option, char string[], const char *filename);
 void fileReader(const char *filename, const char keyword[], int Occurs);
 int linePrinter(const char *getfile);
+void linkFollower (const char *url);
+int programIns(int a);
+int applicationForm ();
 
 int main(void)
 {
@@ -80,16 +97,35 @@ int Homepage()
             break;
         case 2:
             cleanConsole();
-            struct Option options[] = {
-                {"CSE", "cse.txt"},
-                {"EEE", "eee.txt"},
-                {"DS", "ds.txt"},
-                {"BBA", "bba.txt"},
-                {"AIS", "ais.txt"},
-                {"BSE", "bse.txt"}};
-
-            int numOptions = sizeof(options) / sizeof(options[0]);
-            selectTrimesterAndCourses(subMenu(options, numOptions), options);
+            switch (linePrinter(Courselist))
+            {
+                case 1: 
+                trimesterList();
+                fileReader ("CourseList\\cse.txt", "Trimester", takeInput());
+                break;
+                case 2:
+                trimesterList();
+                fileReader ("CourseList\\eee.txt", "Trimester", takeInput());
+                break;
+                case 3:
+                trimesterList();
+                fileReader ("CourseList\\ds.txt", "Trimester", takeInput());
+                break;
+                case 4:
+                trimesterList();
+                fileReader ("CourseList\\bba.txt", "Trimester", takeInput());
+                break;
+                case 5:
+                trimesterList();
+                fileReader ("CourseList\\ais.txt", "Trimester", takeInput());
+                break;
+                case 6:
+                trimesterList();
+                fileReader ("CourseList\\bse.txt", "Trimester", takeInput());
+                break;
+                default:
+                puts("Not a 'VALID' input.");
+            }
 
             if (backto())
                 wheel = 1;
@@ -134,11 +170,23 @@ int Homepage()
         cleanConsole(); 
         switch (linePrinter(Courselist))
         {
-        case 1: fileReader("Tuitionfee.txt","CSE", Occurs);
+        case 1: fileReader(tuiFee,"CSE", Occurs);
 
             break;
         case 2:
                 fileReader(tuiFee, "EEE", Occurs);
+            break;
+        case 3:
+                fileReader(tuiFee, "DS", Occurs);
+            break;
+        case 4:
+                fileReader(tuiFee, "BBA", Occurs);
+            break;
+        case 5:
+                fileReader(tuiFee, "AIS", Occurs);
+            break;
+        case 6:
+                fileReader(tuiFee, "BSE", Occurs);
             break;
         
         default:
@@ -148,6 +196,16 @@ int Homepage()
             if (backto())
                 wheel = 1;
             break;
+        case 5:
+        cleanConsole(); 
+        puts("<<<<<<<<< [Programs] >>>>>>>>>");
+        puts("[1] Undergraduate");
+        puts("[2] Graduate");
+        programIns(takeInput());
+
+        if (backto())
+                wheel = 1;
+        break;
         case 0:
             logout();
         default:
@@ -155,8 +213,111 @@ int Homepage()
         }
     }
 }
+int programIns(int a)
+{
+        puts("[1] Ongoing Circular");
+        puts("[2] Eligibility Check (Direct Admission)");
+        puts("[3] Apply Now");
+        switch (takeInput())
+        {
+            case 1:
+            cleanConsole();
+            linePrinter(circular);
+            break;
+            case 2:
+            cleanConsole();
+            printf("Enter your HSC GPA :");
+            if(takeInput()==5){
+                puts("Youre eligible for direct admission.");
+            }else {
+                puts("Youre not eligible for direct admission.");
+                break;
+            }
+            case 3: 
+            cleanConsole();
+            puts("[1] Online Application");
+            puts("[2] Offline Application");
+            switch (takeInput())
+            {
+                case 1:
+                linkFollower(uiuWeb);
+                break;
+                case 2:
+                if(applicationForm()==0){
+                    puts("You've Successfully applied for this program!");
+                }else{
+                    puts("Something went wrong:'(");
+                }
+                break;
+                default:
+                puts("Invalid Input");
+            }
+        }
+}
+int applicationForm ()
+{
+    struct Apply apply;
+    puts("[1]. Full name:");
+    scanf(" %[^\n]", apply.name);
+    puts("[2]. Father name:");
+    scanf(" %[^\n]", apply.fathername);
+    puts("[3]. Mother name:");
+    scanf(" %[^\n]", apply.mothername);
+    puts("[4]. HSC Registration Number:");
+    scanf(" %[^\n]", apply.regID);
+    puts("[5]. HSC Roll Number:");
+    scanf(" %[^\n]", apply.rollNum);
+    puts("[6]. HSC Result:");
+    scanf("%f", &apply.hscResult);
+    puts("[7]. HSC passing year:");
+    scanf("%d", &apply.passingYear);
+    puts("[8]. SSC Result:");
+    scanf("%f", &apply.sscResult);
+
+ FILE *file = fopen("application_data.txt", "a");  // Use "a" to append to the file
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;  // Return an error code
+    }
+
+    // Write the information to the file
+    removeSpaces(apply.name);
+    removeSpaces(apply.fathername);
+    removeSpaces(apply.mothername);
+    fprintf(file, "Full Name: %s\n", apply.name);
+    fprintf(file, "Father Name: %s\n", apply.fathername);
+    fprintf(file, "Mother Name: %s\n", apply.mothername);
+    fprintf(file, "HSC Registration Number: %s\n", apply.regID);
+    fprintf(file, "HSC Roll Number: %s\n", apply.rollNum);
+    fprintf(file, "HSC Result: %.2f\n", apply.hscResult);
+    fprintf(file, "HSC Passing Year: %d\n", apply.passingYear);
+    fprintf(file, "SSC Result: %.2f\n", apply.sscResult);
+    fprintf(file, "-------------------------\n");
+
+    // Close the file
+    fclose(file);
+
+    return 0;  // Return success
+
+}
+void linkFollower (const char *url)
+{
+    #ifdef _WIN32
+        // For Windows
+        puts("Opening your browser...");
+        char command[256];
+        snprintf(command, sizeof(command), "start %s", url);
+        system(command);
+    #else
+        // For Linux or macOS
+        char command[256];
+        snprintf(command, sizeof(command), "xdg-open %s", url);
+        system(command);
+    #endif
+}
 void fileReader(const char *filename, const char keyword[], int Occurs)
 {
+    cleanConsole();
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
@@ -170,7 +331,12 @@ void fileReader(const char *filename, const char keyword[], int Occurs)
         {
             occurrences++;
             // Stop if we reached the max occurrences
-            if (occurrences == Occurs+1)
+        if (occurrences == Occurs && strstr(line,"Trimester"))
+            {
+                printf("%s", line);
+                continue; // Continue to print the following lines
+            }
+             if (occurrences == Occurs+1)
             {
                 break;
             }
@@ -186,6 +352,7 @@ void fileReader(const char *filename, const char keyword[], int Occurs)
 int linePrinter(const char *getfile)
 {
     char line[256];
+    int count=0;
     FILE *file = fopen(getfile, "r");
     if (file == NULL)
     {
@@ -201,7 +368,7 @@ int linePrinter(const char *getfile)
         }
         else
         {
-            printf("[%d]. %s", i, line);
+            printf("[%d]. %s\n", ++count, line);
         }
     }
 
@@ -323,12 +490,12 @@ void printFiles(int option, char string[], const char *filename)
 
 void trimesterList()
 {
-    puts("Select your Desired trimester to get offered course list:");
+    cleanConsole();
+    puts("Select to get offered course list:");
     for (int i = 1; i <= 12; i++)
     {
         printf("[%d]\tTrimester %d\n", i, i);
     }
-    printf("\nSELECT_:");
 }
 void about_uiu()
 {
@@ -353,7 +520,8 @@ int feature_list()
     puts("[1] About UIU");
     puts("[2] Available Subjects");
     puts("[3] Faculty Details");
-    puts("[3] Tuition Fee");
+    puts("[4] Tuition Fee");
+    puts("[5] Admission Procedure");
     puts("[0] EXIT");
     printf("SELECT_:");
     scanf("%d", &option);
@@ -515,7 +683,7 @@ void cleanConsole()
 int takeInput()
 {
     int input;
-    printf("\nSelect to learn more :");
+    printf("\nAwaiting your input:");
     scanf("%d",&input);
     cleanConsole();
     return input;
