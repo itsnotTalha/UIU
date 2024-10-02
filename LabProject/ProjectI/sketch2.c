@@ -10,7 +10,8 @@ const char *Courselist = "Courses.txt";
 const char *Faclist = "FacultyList\\FacultyList.txt";
 const char *tuiFee = "Tuitionfee.txt";
 const char *circular = "Circular.txt";
-const char *uiuWeb = "https://www.facebok.com";
+const char *uiuWeb = "https://admission.uiu.ac.bd/Admission/Home.aspx#Apply";
+
 
 struct Signup
 {
@@ -41,7 +42,7 @@ struct Apply
     float hscResult;
     int passingYear;
     char regID[20];
-    char rollNum[20];
+    char rollNum[11];
     float sscResult;
 };
 
@@ -66,6 +67,7 @@ int linePrinter(const char *getfile);
 void linkFollower (const char *url);
 int programIns(int a);
 int applicationForm ();
+void resulChk(const char *roll);
 
 int main(void)
 {
@@ -206,12 +208,42 @@ int Homepage()
         if (backto())
                 wheel = 1;
         break;
+        case 6:
+        char roll[15];
+        cleanConsole();
+        printf("Enter your HSC Roll :");
+        scanf("%s", roll);
+        resulChk(roll);
+        if (backto())
+                wheel = 1;
+        break;
         case 0:
             logout();
         default:
             puts("Not a 'VALID' input.");
         }
     }
+}
+void resulChk(const char *roll)
+{
+    FILE *file = fopen("resultList.txt", "r");
+    if (file == NULL)
+    {
+        printf("Not able to open the file.");
+    }
+    char line[256];
+    while (fgets(line, sizeof(line), file))
+    {
+        if (strstr(line, roll) != NULL)
+        {
+            puts("Congrats! You've benn selected");
+            break;
+        } else {
+            puts("Better luck next time.");
+            break;
+        }
+    }    
+    fclose(file);
 }
 int programIns(int a)
 {
@@ -222,7 +254,7 @@ int programIns(int a)
         {
             case 1:
             cleanConsole();
-            linePrinter(circular);
+            fileReader(circular, "start",1);
             break;
             case 2:
             cleanConsole();
@@ -265,7 +297,7 @@ int applicationForm ()
     scanf(" %[^\n]", apply.mothername);
     puts("[4]. HSC Registration Number:");
     scanf(" %[^\n]", apply.regID);
-    puts("[5]. HSC Roll Number:");
+    puts("[5]. HSC Roll Number[10 DIGIT]:");
     scanf(" %[^\n]", apply.rollNum);
     puts("[6]. HSC Result:");
     scanf("%f", &apply.hscResult);
@@ -522,6 +554,7 @@ int feature_list()
     puts("[3] Faculty Details");
     puts("[4] Tuition Fee");
     puts("[5] Admission Procedure");
+    puts("[6] Admission Test Result");
     puts("[0] EXIT");
     printf("SELECT_:");
     scanf("%d", &option);
